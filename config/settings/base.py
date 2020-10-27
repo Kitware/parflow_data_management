@@ -75,15 +75,17 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    "django_extensions",
+    "guardian",
+    "rest_framework",
+    "drf_yasg",
 ]
+
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "rest_framework",
-    "guardian",
-    "django_extensions"
 ]
 
 LOCAL_APPS = [
