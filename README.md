@@ -12,6 +12,15 @@ sudo apt install python-dev libpq-dev postgresql postgresql-contrib
 ### Redis
 Redis is used by Django channels as a back-end for communicating between instances. Unfortunately, the version available through `apt` is out of date (version >= 5.0 is required). For linux, installation instructions can be found at https://redis.io/download#installation.
 
+### RabbitMQ
+RabbitMQ is used by Celery in a similar manner as Redis. Simple instructions for installing and configuring RabbitMQ can be found at the following link, but will be repeated below: https://simpleisbetterthancomplex.com/tutorial/2017/08/20/how-to-use-celery-with-django.html#installing-rabbitmq-on-ubuntu-1604
+
+Install `erlang` and `rabbitmq-server`:
+```
+sudo apt-get install -y erlang
+sudo apt-get install rabbitmq-server
+```
+
 ### Python Packages
 Several Python packages are required. They can easy be installed using `pip` and one of the requirements files in the `requirements` subdirectory.
 
@@ -79,8 +88,25 @@ Switch out of the `postgres` user's bash session:
 exit
 ```
 
-## Setting up a redis server
+## Setting Up a Redis Server
 To run a redis server, navigate to the install directory from the instructions above and run `src/redis-server`.
+
+## Setting Up a RabbitMQ Server
+Start `RabbitMQ`:
+```
+systemctl enable rabbitmq-server
+systemctl start rabbitmq-server
+```
+Check that the service is running with:
+```
+systemctl status rabbitmq-server
+```
+
+## Start a Celery worker
+From the root directory of the project, run:
+```
+celery -A parflow_data_management worker -l INFO
+```
 
 ## Passing Sensitive Settings Variables to Django via .env File
 It's convention to store any sensitive configuration data required by Django in a `.env` file in the project root.
