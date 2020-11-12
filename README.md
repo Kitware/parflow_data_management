@@ -22,18 +22,17 @@ sudo apt-get install rabbitmq-server
 ```
 
 ### Python Packages
-Several Python packages are required. They can easy be installed using `pip` and one of the requirements files in the `requirements` subdirectory.
+Several Python packages are required. They can easy be installed using `pip` to install this repo as a Python package.
 
 Clone this repo or download the source files. To easily clone:
 ```
 git clone https://github.com/tao558/parflow_data_management.git
 ```
 
-Navigate to the project root. Then, to install the python packages, run:
+Navigate to the project root. Then, to install this package and all dependencies:
 ```
-pip install -r requirements/<local | production>.txt
+pip install -e parflow_data_management/
 ```
-Choose the requirements file that corresponds to the environment that the application will be run in (e.g., for local development, choose `local.txt`)
 
 ## Create a PostgreSQL Database
 Django needs a database to store the application's models. Simple instructions can be found at https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04. The instructions are also copied below.
