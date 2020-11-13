@@ -64,6 +64,6 @@ setup(
         "factory-boy",
         "django-debug-toolbar",
         "django-coverage-plugin",
-        "pytest-django",
+        "pytest-django"
     ],
 )
