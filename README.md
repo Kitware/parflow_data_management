@@ -164,3 +164,22 @@ To run the tests, simply run `./manage.py test <test_module> --settings=config.s
 ```
 ./manage.py test parflow_data_management.scheduler.tests.test_permissions
 ```
+
+## Develop with Docker
+
+### Initial Setup
+1. Run `docker-compose run --rm django ./manage.py migrate`
+2. Run `docker-compose run --rm django ./manage.py createsuperuser`
+   and follow the prompts to create your own user
+
+### Run Application
+1. Run `docker-compose up`
+2. Access the site, starting at http://localhost:8000/admin/
+3. When finished, use `Ctrl+C`
+
+### Application Maintenance
+Occasionally, new package dependencies or schema changes will necessitate
+maintenance. To non-destructively update your development stack at any time:
+1. Run `docker-compose pull`
+2. Run `docker-compose build`
+3. Run `docker-compose run --rm django ./manage.py migrate`

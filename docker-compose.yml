@@ -1,0 +1,20 @@
+version: '3'
+services:
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: django
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - ${DOCKER_POSTGRES_PORT-5432}:5432
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - ${DOCKER_RABBITMQ_PORT-5672}:5672
+
+  redis:
+    image: redis:latest
+    ports:
+      - ${DOCKER_REDIS_PORT-6379}:6379

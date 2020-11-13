@@ -277,7 +277,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [(env("REDIS_HOST", default="127.0.0.1"), 6379)],
         },
     },
 }
@@ -290,4 +290,4 @@ REST_FRAMEWORK = {
 }
 # CELERY
 # ------------------------------------------------------------------------------
-CELERY_BROKER_URL = 'amqp://127.0.0.1:5672'
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="amqp://127.0.0.1:5672")
