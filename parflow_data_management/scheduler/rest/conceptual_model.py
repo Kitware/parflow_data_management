@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.viewsets import ModelViewSet
-from scheduler.models.conceptual_model import ConceptualModel
+from parflow_data_management.scheduler.models.conceptual_model import ConceptualModel
 
 class ConceptualModelSerializer(serializers.ModelSerializer):
     class Meta:

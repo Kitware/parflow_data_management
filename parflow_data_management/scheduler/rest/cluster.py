@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.viewsets import ModelViewSet
-from scheduler.models.cluster import Cluster
+from parflow_data_management.scheduler.models.cluster import Cluster
 
 class ClusterSerializer(serializers.ModelSerializer):
     class Meta:

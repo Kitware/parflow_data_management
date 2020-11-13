@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.viewsets import ModelViewSet
-from scheduler.models.simulation import Simulation
+from parflow_data_management.scheduler.models.simulation import Simulation
 
 class SimulationSerializer(serializers.ModelSerializer):
     class Meta:

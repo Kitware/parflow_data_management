@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from xkcdpass import xkcd_password as xp
 from celery import shared_task
 
-from transport.models.key_pair import KeyPair
+from parflow_data_management.transport.models.key_pair import KeyPair
 from .consumers import compute_group_for_user
 
 @shared_task

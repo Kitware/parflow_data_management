@@ -91,8 +91,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "parflow_data_management.users.apps.UsersConfig",
-    "scheduler",
-    "transport",
+    "parflow_data_management.scheduler",
+    "parflow_data_management.transport",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

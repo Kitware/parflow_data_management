@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.viewsets import ModelViewSet
-from scheduler.models.project import Project
+from parflow_data_management.scheduler.models.project import Project
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
