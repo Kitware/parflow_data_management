@@ -3,7 +3,7 @@
 ## Prerequisites
 
 ### PostgreSQL
-PostgreSQL is used on the back-end for database management. We'll also need some other libraries so Django can communicate with the database. 
+PostgreSQL is used on the back-end for database management. We'll also need some other libraries so Django can communicate with the database.
 These can all be installed via package manager. For Ubuntu, use the following command:
 ```
 sudo apt install python-dev libpq-dev postgresql postgresql-contrib
@@ -60,7 +60,7 @@ CREATE USER <my_user> WITH PASSWORD '<my_pass>';
 Where ```my_user``` is the name of the new user and ```my_pass``` is the user's secure password.
 Remember both of these for later.
 
-Set some other misc. settings for our database. The first line sets the encoding to UTF-8, and the second prevents "dirty reads": 
+Set some other misc. settings for our database. The first line sets the encoding to UTF-8, and the second prevents "dirty reads":
 ```
 ALTER ROLE <my_user> SET client_encoding TO 'utf8';
 ALTER ROLE <my_user> SET default_transaction_isolation TO 'read committed';
