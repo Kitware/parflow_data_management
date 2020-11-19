@@ -13,6 +13,7 @@ class Cluster(TimeStampedModel, models.Model):
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="clusters")
     hostname = CharField(_("Hostname"), blank=False, max_length=253)
 
+
 @receiver(models.signals.post_save, sender=Cluster)
 def _cluster_post_save(sender, instance, created, *args, **kwargs):
     if created:

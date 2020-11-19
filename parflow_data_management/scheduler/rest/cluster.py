@@ -5,7 +5,7 @@ from parflow_data_management.scheduler.models.cluster import Cluster
 class ClusterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cluster
-        fields = ("id", "user")
+        fields = "__all__"
 
 class ClusterViewSet(ModelViewSet):
     queryset = Cluster.objects.all()

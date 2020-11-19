@@ -1,0 +1,57 @@
+<html>
+
+<label for="cluster-id-field">Cluster ID:</label>
+<input type="number" id="cluster-id-field" name="cluster-id">
+
+<br>
+
+<label for="output-field">Output:</label>
+<textarea id="output-field" cols="100" rows="5" readonly></textarea><br>
+
+<input id="execute_btn" type="submit" class="btn" value="Execute" name="execute_btn"/>
+<script>
+  var generated_csrf_token = "{{ csrf_token }}";
+
+  const commandSocket = new WebSocket(
+      'ws://'
+      + window.location.host
+      + '/ws/execute/'
+  );
+
+  document.getElementById("execute_btn").onclick = function() {
+    console.log("Execute button was clicked")
+
+    cluster_id = document.getElementById("cluster-id-field").value
+    console.log("Cluster id:", cluster_id)
+
+    if (cluster_id != "")
+    {
+      var dest_url = "/clusters/" + cluster_id + "/execute"
+      console.log("Going to " + dest_url)
+      fetch(dest_url, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "X-CSRFToken": generated_csrf_token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        }
+      })
+    }
+
+    document.getElementById("cluster-id-field").value = ""
+  }
+
+  commandSocket.onmessage = function(e) {
+      console.log("Receiving message")
+      const data = JSON.parse(e.data);
+      document.getElementById('output-field').value = (data.data.output);
+  };
+
+  commandSocket.onclose = function(e) {
+      console.error('Key socket closed unexpectedly');
+  };
+
+</script>
+</html>
