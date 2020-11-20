@@ -9,7 +9,7 @@ from xkcdpass import xkcd_password as xp
 from celery import shared_task
 
 from parflow_data_management.transport.models.key_pair import KeyPair
-from .consumers import compute_group_for_user
+from ..consumers import compute_group_for_user
 
 @shared_task
 def generate_key_and_passphrase(user_id, key_pair_id):
