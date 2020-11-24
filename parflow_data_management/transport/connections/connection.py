@@ -6,5 +6,5 @@ class Connection(object):
     def __enter__(self):
         raise NotImplementedError("Implemented by subclass")
 
-    def __exit__(self):
+    def __exit__(self, type, value, traceback):
         raise NotImplementedError("Implemented by subclass")

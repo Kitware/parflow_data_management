@@ -30,5 +30,5 @@ urlpatterns = [
     path("api/docs/swagger/", schema_view.with_ui("swagger"), name="docs-swagger"),
     # HPC command execution
     path("execute", cluster_execute_page),
-    path("clusters/<int:cluster_id>/execute", start_execution),
+    path("clusters/<int:cluster_id>/execute/", start_execution),
 ]

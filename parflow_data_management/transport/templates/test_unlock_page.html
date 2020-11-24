@@ -1,0 +1,35 @@
+<html>
+<label for="passphrase-field">Passphrase:</label>
+<textarea id="passphrase-field" cols="100" rows="1"></textarea><br>
+
+<label for="key-id-field">Key ID:</label>
+<textarea id="key-id-field" cols="100" rows="1"></textarea><br>
+
+<input id="unlock_button_id" type="submit" class="btn" value="Unlock" name="unlock_button"/>
+<script>
+  var generated_csrf_token = "{{ csrf_token }}";
+
+  document.getElementById("unlock_button_id").onclick = function() {
+    key_id = document.getElementById("key-id-field").value
+    passphrase = document.getElementById("passphrase-field").value
+    console.log("Key id:", key_id)
+    if (key_id != "")
+    {
+      var dest_url = "/keypairs/" + key_id + "/unlock/"
+      console.log("Going to " + dest_url)
+      fetch(dest_url, {
+        method: "POST",
+        body: JSON.stringify({"passphrase": passphrase}),
+        credentials: "same-origin",
+        headers: {
+          "X-CSRFToken": generated_csrf_token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      })
+    }
+  }
+
+</script>
+</html>

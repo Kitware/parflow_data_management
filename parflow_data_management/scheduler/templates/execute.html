@@ -26,7 +26,7 @@
 
     if (cluster_id != "")
     {
-      var dest_url = "/clusters/" + cluster_id + "/execute"
+      var dest_url = "/clusters/" + cluster_id + "/execute/"
       console.log("Going to " + dest_url)
       fetch(dest_url, {
         method: "POST",
