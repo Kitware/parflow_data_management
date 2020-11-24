@@ -14,7 +14,7 @@ def cluster_execute_page(request):
 @api_view(["POST"])
 def start_execution(request, cluster_id):
     try:
-        remote_execute_cmd(cluster_id, "ls")
+        remote_execute_cmd(cluster_id, request.user.id, "ls")
     except KeyError as e:
         raise  # TODO: This should return an error code instead of propagate the exception
     return Response()

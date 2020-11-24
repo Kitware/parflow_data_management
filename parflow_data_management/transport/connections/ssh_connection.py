@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 import paramiko
 
 from parflow_data_management.scheduler.models.cluster import Cluster
@@ -15,14 +16,17 @@ class SSHConnection(Connection):
         raise NotImplementedError("Implemented by subclass")
 
     def __enter__(self):
+        err_msg = "Please unlock private key"
+
         # Check if private key is in cache
+        data_for_cluster = cache.get(self._cluster.id)
+        if data_for_cluster is None:
+            raise KeyError(err_msg)
+
         try:
-            private_key = cache.get(cluster_id)["private_keys"][self._user.id]
+            private_key = data_for_cluster["private_keys"][self._user.id]
         except KeyError as e:
-            msg = "Please unlock private key for user {} and cluster {}".format(
-                user_id, cluster_id
-            )
-            raise KeyError(msg) from e
+            raise KeyError(err_msg) from e
         else:
             # Find authorized keys file for this user / cluster combo to get
             # public key
