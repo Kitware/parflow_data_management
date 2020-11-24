@@ -17,9 +17,12 @@ class SSHConnection(Connection):
     def __enter__(self):
         # Check if private key is in cache
         try:
-            private_key = cache[cluster_id]["private_keys"][self._user.id]
-        except KeyError:
-            pass  # TODO error, please unlock key
+            private_key = cache.get(cluster_id)["private_keys"][self._user.id]
+        except KeyError as e:
+            msg = "Please unlock private key for user {} and cluster {}".format(
+                user_id, cluster_id
+            )
+            raise KeyError(msg) from e
         else:
             # Find authorized keys file for this user / cluster combo to get
             # public key
@@ -28,7 +31,7 @@ class SSHConnection(Connection):
             )
 
             # For now we're assuming there's one key_pair per authorized keys file
-            public_key = auth_keys.key_pair.public_key # TODO: need this?
+            public_key = auth_keys.key_pair.public_key  # TODO: need this?
             username = auth_keys.username
 
             # Start Paramiko connection
