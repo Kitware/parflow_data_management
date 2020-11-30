@@ -44,8 +44,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        # TODO: make this the same as the REDIS_URL variable below?
-        "LOCATION": env("REDIS_HOST", default="127.0.0.1:6379"),
+        "LOCATION": env("REDIS_HOST", default="redis://127.0.0.1:6379/1"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             # Mimicing memcache behavior.
@@ -293,7 +292,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(env("REDIS_HOST", default="127.0.0.1"), 6379)],
+            "hosts": [env("REDIS_HOST", default="redis://127.0.0.1:6379/1")],
         },
     },
 }

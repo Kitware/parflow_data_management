@@ -56,4 +56,5 @@ def unlock_private_key(request, key_pair_id):
 
     current_dict[key_pair.id] = private_key_decrypted
     cache.set("UNENCRYPTED_PRIVATE_KEYS", current_dict)
+
     return Response()

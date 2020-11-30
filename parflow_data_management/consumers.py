@@ -23,7 +23,7 @@ class GeneralConsumer(JsonWebsocketConsumer):
         self.send_json({
             "type": "command.output",
             "data": message["data"],
-            })
+        })
 
 # Compute a unique group name that will contain only the connection
 # for the given user.
