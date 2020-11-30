@@ -1,3 +1,4 @@
+import io
 import json
 
 from django.core.cache import cache
@@ -6,7 +7,7 @@ from paramiko.rsakey import RSAKey
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from parflow_data_management.transport.tasks import generate_key_and_passphrase, unlock_key_pair
+from parflow_data_management.transport.tasks import generate_key_and_passphrase
 from .models.key_pair import KeyPair
 
 
