@@ -45,6 +45,7 @@ class SSHConnection(Connection):
         # Start Paramiko connection
         self._client = paramiko.SSHClient()
         self._client.load_system_host_keys()
+        self._client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self._client.connect(
             hostname=self._cluster.hostname,
             username=auth_key.username,
