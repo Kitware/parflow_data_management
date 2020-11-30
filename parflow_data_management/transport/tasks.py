@@ -4,7 +4,6 @@ import json
 from asgiref.sync import async_to_sync
 from celery import shared_task
 from channels.layers import get_channel_layer
-from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from paramiko.rsakey import RSAKey
 from xkcdpass import xkcd_password as xp
@@ -39,28 +38,3 @@ def generate_key_and_passphrase(user_id, key_pair_id):
     async_to_sync(channel_layer.group_send)(
         group, {"type": "public.key.with.passphrase", "data": data}
     )
-
-
-@shared_task
-def unlock_key_pair(key_pair_id, passphrase):
-    # Retrieve encrypted private key from the database
-    key_pair = KeyPair.objects.get(pk=key_pair_id)
-    private_key_encrypted = key_pair.private_key_encrypted
-
-    # Attempt decryption
-    key_obj = RSAKey.from_private_key(
-        io.StringIO(private_key_encrypted), password=passphrase
-    )
-
-    # If it succeeded, get the unencrypted private key
-    desc = io.StringIO()
-    key_obj.write_private_key(desc)
-    private_key_decrypted = desc.getvalue()
-
-    # Store unencrypted private key in the cache
-    current_dict = cache.get("UNENCRYPTED_PRIVATE_KEYS")
-    if current_dict is None:
-        current_dict = dict()
-
-    current_dict[key_pair.id] = private_key_decrypted
-    cache.set("UNENCRYPTED_PRIVATE_KEYS", current_dict)
