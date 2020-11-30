@@ -3,7 +3,7 @@ import json
 from channels.generic.websocket import JsonWebsocketConsumer
 from asgiref.sync import async_to_sync
 
-class GeneralConsumer(JsonWebsocketConsumer):
+class RemoteEventConsumer(JsonWebsocketConsumer):
     def connect(self):
         self.accept()
         group = compute_group_for_user(self.scope["user"].id)
