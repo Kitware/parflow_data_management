@@ -1,10 +1,7 @@
 from asgiref.sync import async_to_sync
 from celery import shared_task
 from channels.layers import get_channel_layer
-from django.core.cache import cache
-from paramiko.rsakey import RSAKey
 
-from .models.cluster import Cluster
 from ..consumers import compute_group_for_user
 from ..transport.connections.ssh_connection import SSHConnection
 
