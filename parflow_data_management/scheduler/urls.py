@@ -4,7 +4,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions, routers
 
 from .rest import cluster, conceptual_model, mesh, metadata, project, simulation
-from .views.cluster import cluster_execute_page, start_execution
+from .views import cluster_execute_page, start_execution
 
 
 router = routers.DefaultRouter(trailing_slash=False)
