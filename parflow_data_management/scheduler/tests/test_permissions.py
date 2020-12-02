@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from scheduler.models.conceptual_model import ConceptualModel
-from scheduler.models.mesh import Mesh
-from scheduler.models.metadata import Metadata
-from scheduler.models.project import Project
-from scheduler.models.project_asset import check_project_asset_perm
-from scheduler.models.simulation import Simulation
+
+from ..models.conceptual_model import ConceptualModel
+from ..models.mesh import Mesh
+from ..models.metadata import Metadata
+from ..models.project import Project
+from ..models.project_asset import check_project_asset_perm
+from ..models.simulation import Simulation
 
 
 class PermissionTestCase(TestCase):

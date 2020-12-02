@@ -28,7 +28,8 @@ class KeyPair(TimeStampedModel, models.Model):
 
     def _private_key_decrypted(self, passphrase=None):
         if self.is_unlocked():
-            return cache.get("UNENCRYPTED_PRIVATE_KEYS")[self.id]
+            private_key_str = cache.get("UNENCRYPTED_PRIVATE_KEYS")[self.id]
+            return RSAKey.from_private_key(io.StringIO(private_key_str))
         raise RuntimeError("Private key needs to be unlocked")
 
     def unlock(self, passphrase):
@@ -50,5 +51,5 @@ class KeyPair(TimeStampedModel, models.Model):
         if current_dict is None:
             current_dict = dict()
 
-        current_dict[key_pair.id] = private_key_decrypted
+        current_dict[self.id] = private_key_decrypted
         cache.set("UNENCRYPTED_PRIVATE_KEYS", current_dict)
