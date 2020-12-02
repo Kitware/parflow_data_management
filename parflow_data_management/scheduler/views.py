@@ -22,5 +22,5 @@ def start_execution(request, cluster_id):
         remote_execute_cmd.delay(cluster_id, request.user.id, "ls")
         return Response()
 
-    content = "Please unlock your private key for this cluster"
+    content = "Private key needs to be unlocked"
     return HttpResponseBadRequest(content)

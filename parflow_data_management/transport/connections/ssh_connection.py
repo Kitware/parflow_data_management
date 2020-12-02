@@ -1,8 +1,6 @@
 import io
 
 from django.contrib.auth import get_user_model
-from django.core.cache import cache
-from paramiko.rsakey import RSAKey
 import paramiko
 
 from ..models.authorized_key import AuthorizedKey
@@ -32,13 +30,6 @@ class SSHConnection(Connection):
         # For now we're assuming there's one key_pair per authorized keys file
         key_pair = auth_key.key_pair
 
-        private_key_dict = cache.get("UNENCRYPTED_PRIVATE_KEYS")
-
-        # Construct key object from the private key in memory
-        key_obj = RSAKey.from_private_key(
-            io.StringIO(private_key_dict[key_pair.id])
-        )
-
         # Start Paramiko connection
         self._client = paramiko.SSHClient()
         self._client.load_system_host_keys()
@@ -46,7 +37,7 @@ class SSHConnection(Connection):
         self._client.connect(
             hostname=self._cluster.hostname,
             username=auth_key.username,
-            pkey=key_obj,
+            pkey=key_pair._private_key_decrypted(),
             look_for_keys=False,
             allow_agent=False
         )
