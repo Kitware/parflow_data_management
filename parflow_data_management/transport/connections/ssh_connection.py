@@ -5,8 +5,8 @@ from django.core.cache import cache
 from paramiko.rsakey import RSAKey
 import paramiko
 
-from .connection import Connection
 from ..models.authorized_key import AuthorizedKey
+from .connection import Connection
 from parflow_data_management.scheduler.models.cluster import Cluster
 
 
@@ -26,16 +26,13 @@ class SSHConnection(Connection):
         return output
 
     def __enter__(self):
-        # Find authorized keys file for this user / cluster combo to get
+        # Find authorized keys file for this user / cluster combo
         auth_key = AuthorizedKey.objects.get(cluster=self._cluster, owner=self._user)
 
         # For now we're assuming there's one key_pair per authorized keys file
         key_pair = auth_key.key_pair
 
-        # Check if private key is in cache
         private_key_dict = cache.get("UNENCRYPTED_PRIVATE_KEYS")
-        if private_key_dict is None or key_pair.id not in private_key_dict:
-            raise KeyError("Please unlock private key")
 
         # Construct key object from the private key in memory
         key_obj = RSAKey.from_private_key(
