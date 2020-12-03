@@ -17,11 +17,17 @@ class KeyPairTestCase(TestCase):
         # Normally we'd submit a post request to create a new key_pair.
         # For testing purposes, we'll just set up the database accordingly
         new_key = RSAKey.generate(bits=4096)
+
+        # Get the decrypted key
+        out_desc = io.StringIO()
+        new_key.write_private_key(out_desc)
+        self.expected_private_key = out_desc.getvalue()
+
+        # Get the encrypted key
         out_desc = io.StringIO()
         new_key.write_private_key(out_desc, password="test_password")
 
-        self.expected_private_key = out_desc.getvalue()
-
+        # Set up the key_pair instance in the db with the encrypted key
         self.key_pair = KeyPair.objects.create()
         self.key_pair.owner = test_user
         self.key_pair.public_key = new_key.get_base64()
@@ -35,7 +41,7 @@ class KeyPairTestCase(TestCase):
 
         # Unlock key through endpoint
         args = {"passphrase": "test_password"}
-        endpt = "/keypairs/{}/unlock/".format(str(self.key_pair.id))
+        endpt = "/keypairs/{}/unlock/".format(self.key_pair.id)
         response = self.client.post(endpt, args)
 
         self.assertEqual(response.status_code, 200)
