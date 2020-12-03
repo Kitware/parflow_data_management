@@ -162,10 +162,7 @@ Where:
 ## Testing
 First, make sure that the DATABASE_USER of your choice, `<my_user>`, has permission to create and remove databases. See the "Creating a PostgreSQL Database" section.
 
-To run the tests, simply run `./manage.py test <test_module> --settings=config.settings.test`. For example, to run the tests in parflow_data_management/scheduler/tests/test_permission:
-```
-./manage.py test parflow_data_management.scheduler.tests.test_permissions
-```
+To run the tests, simply run `./manage.py test --settings=config.settings.test` from the root directory of the project.
 
 ## Develop with Docker
 
