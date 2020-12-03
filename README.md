@@ -119,9 +119,8 @@ This keeps sensitive variables like the `DJANGO_SECRET_KEY` from being shared, w
 | ``DATABASE_HOST``        |     Optional. IP address that the database is hosted on. Defaults to `localhost` |
 | ``DATABASE_PORT``        |     Optional. Port that the database is hosted on at the above IP address. Defaults to `5432` |
 | ``DJANGO_ALLOWED_HOSTS`` |     Required for production and test. List of allowed hosts for the application to run on. Default to `["localhost", "0.0.0.0", "127.0.0.1"]` for `local` environments. Read in as a comma-separated list (e.g. `DJANGO_ALLOWED_HOSTS=host1,host2`) |
-| ``REDIS_URL``            |     Required for production. `<ip:port>` value where ip is the IP address of the Memcached daemon used for cache management, and `port` is the port on which the daemon is running |
 | ``DJANGO_ADMIN_URL``     |     Required for production. URL for admin page. Defaults to `admin/` for local environments. |
-| ``REDIS_HOST``           |     Required. IP address for the Redis server used by Django Channels. Defaults to `127.0.0.1:6379` |
+| ``REDIS_HOST``           |     Required. IP address for the Redis server used by Django Channels and the cache backend. Defaults to `127.0.0.1:6379` |
 | ``CELERY_BROKER_URL``    |     Required. URL for the broker service used by celery for asynchronous tasks. Defaults to `amqp://127.0.0.1:5672` |
 
 
