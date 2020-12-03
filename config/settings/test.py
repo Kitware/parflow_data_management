@@ -17,6 +17,13 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 # https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 
+# CACHING
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
 # TEMPLATES
 # ------------------------------------------------------------------------------
 TEMPLATES[-1]["OPTIONS"]["loaders"] = [  # type: ignore[index] # noqa F405

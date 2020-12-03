@@ -8,7 +8,10 @@ from paramiko.rsakey import RSAKey
 from ..models.key_pair import KeyPair
 
 
-class KeyPairTestCase(TestCase):
+class KeyPairGenerationTestCase(TestCase):
+    pass
+
+class KeyPairEncryptionTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         User = get_user_model()
