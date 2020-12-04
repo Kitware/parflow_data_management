@@ -60,12 +60,12 @@ CACHES = {
 
 DATABASES = {
     "default": {
-      "ENGINE": "django.db.backends.postgresql_psycopg2",
-      "NAME": env("DATABASE_NAME"),
-      "USER": env("DATABASE_USER"),
-      "PASSWORD": env("DATABASE_PASSWORD"),
-      "HOST": env("DATABASE_HOST", default="localhost"),
-      "PORT": env("DATABASE_PORT", default=5432),
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": env("DATABASE_NAME"),
+        "USER": env("DATABASE_USER"),
+        "PASSWORD": env("DATABASE_PASSWORD"),
+        "HOST": env("DATABASE_HOST", default="localhost"),
+        "PORT": env("DATABASE_PORT", default=5432),
     }
 }
 
@@ -102,6 +102,7 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
 
 LOCAL_APPS = [
@@ -111,6 +112,12 @@ LOCAL_APPS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# SOCIAL ACCOUNTS
+SITE_ID = 1
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {"SCOPE": ["email"], "AUTH_PARAMS": {"access_type": "online"}}
+}
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -123,7 +130,7 @@ MIGRATION_MODULES = {"sites": "parflow_data_management.contrib.sites.migrations"
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
-    'guardian.backends.ObjectPermissionBackend'
+    "guardian.backends.ObjectPermissionBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
@@ -287,20 +294,18 @@ LOGGING = {
 
 # CHANNELS
 # ------------------------------------------------------------------------------
-ASGI_APPLICATION = 'config.asgi.application'
+ASGI_APPLICATION = "config.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [env("REDIS_HOST", default="redis://127.0.0.1:6379/1")],
-        },
+        "CONFIG": {"hosts": [env("REDIS_HOST", default="redis://127.0.0.1:6379/1")],},
     },
 }
 # REST_FRAMEWORK
 # ------------------------------------------------------------------------------
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication'
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication"
     ]
 }
 # CELERY
