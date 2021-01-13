@@ -19,3 +19,7 @@ def remote_execute_cmd(cluster_id, user_id, command):
     async_to_sync(channel_layer.group_send)(
         group, {"type": "command.output", "data": data}
     )
+
+@shared_task
+def submit_job(cluster_id, simulation_id):
+    pass

@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from ..transport.models.authorized_key import AuthorizedKey
-from parflow_data_management.scheduler.tasks import remote_execute_cmd
+from parflow_data_management.scheduler.tasks import remote_execute_cmd, submit_job
 
 
 def cluster_execute_page(request):
@@ -28,3 +28,7 @@ def start_execution(request, cluster_id):
 
     content = "Private key needs to be unlocked"
     return HttpResponseBadRequest(content)
+
+@api_view(["POST"])
+def start_submit(request, cluster_id, simulation_id):
+    submit_job(cluster_id, simulation_id)
