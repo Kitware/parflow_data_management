@@ -5,8 +5,6 @@ from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
 from guardian.shortcuts import assign_perm
-from paramiko import RSAKey
-
 
 class Cluster(TimeStampedModel, models.Model):
     name = CharField(_("Name of Cluster"), blank=True, max_length=255)
