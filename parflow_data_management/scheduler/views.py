@@ -11,6 +11,8 @@ from parflow_data_management.scheduler.tasks import remote_execute_cmd, submit_j
 def cluster_execute_page(request):
     return render(request, "execute.html")
 
+def test_simulation_submit(request):
+    return render(request, "test_simulation_submit.html")
 
 @api_view(["POST"])
 def start_execution(request, cluster_id):

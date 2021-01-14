@@ -1,0 +1,35 @@
+<html>
+<label for="cluster-id-field">Cluster ID:</label>
+<textarea id="cluster-id-field" cols="100" rows="1"></textarea><br>
+
+<label for="simulation-id-field">Simulation ID:</label>
+<textarea id="simulation-id-field" cols="100" rows="1"></textarea><br>
+
+<input id="submit_button_id" type="submit" class="btn" value="Submit" name="submit_button"/>
+<script>
+  var generated_csrf_token = "{{ csrf_token }}";
+
+  document.getElementById("submit_button_id").onclick = function() {
+    cluster_id = document.getElementById("cluster-id-field").value
+    simulation_id = document.getElementById("simulation-id-field").value
+    console.log("Cluster id:", cluster_id)
+    console.log("Simulation id:", simulation_id)
+    if (cluster_id != "" && simulation_id != "")
+    {
+      var dest_url = "clusters/" cluster_id + "/simulations/" + simulation_id + "/submit/"
+      console.log("Going to " + dest_url)
+      fetch(dest_url, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "X-CSRFToken": generated_csrf_token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      })
+    }
+  }
+
+</script>
+</html>

@@ -11,7 +11,7 @@ from .rest import (
     project,
     simulation,
 )
-from .views import cluster_execute_page, start_execution
+from .views import cluster_execute_page, start_execution, test_simulation_submit
 
 
 router = routers.DefaultRouter(trailing_slash=False)
@@ -44,6 +44,7 @@ urlpatterns = [
     # HPC command execution
     path("execute", cluster_execute_page),
     path("clusters/<int:cluster_id>/execute/", start_execution),
+    path("test-submit", test_simulation_submit),
     path(
         "clusters/<int:cluster_id>/simulations/<int:simulation_id>/submit/",
         start_execution,
