@@ -25,24 +25,32 @@ class Cluster(TimeStampedModel, models.Model):
     max_cores = CharField(max_length=8)
     architecture = CharField(max_length=64)
     time_cmd = CharField(max_length=64, blank=True)
-    large_file_threshold = CharField(max_length=64)
-    large_file_chunk_size = CharField(max_length=64)
+    large_file_threshold = CharField(max_length=64, blank=True)
+    large_file_chunk_size = CharField(max_length=64, blank=True)
 
     def _gc3_settings_dict(self):
-        return {
+        ret = {
             "name": self.name,
             "max_cores_per_job": self.max_cores_per_job,
             "max_memory_per_core": self.max_memory_per_core,
             "max_walltime": self.max_walltime,
             "max_cores": self.max_cores,
             "architecture": self.architecture,
-            "time_cmd": self.time_cmd,
             "large_file_threshold": self.large_file_threshold,
             "large_file_chunk_size": self.large_file_chunk_size,
             "frontend": self.hostname,
             "type": self.scheduler_type,
         }
+        if self.time_cmd:
+            ret["time_cmd"]: self.time_cmd
 
+        if self.large_file_threshold:
+            ret["large_file_threshold"]: self.large_file_threshold
+
+        if self.large_file_chunk_size:
+            ret["large_file_chunk_size"]: self.large_file_chunk_size
+
+        return ret
 
 @receiver(models.signals.post_save, sender=Cluster)
 def _cluster_post_save(sender, instance, created, *args, **kwargs):
