@@ -60,6 +60,7 @@ def submit_job(user_id, cluster_id, simulation_id):
     resource_settings = cluster._gc3_settings_dict()
     resource_settings["auth"] = "ssh"
     resource_settings["enabled"] = "yes"
+    resource_settings["pkey"] = auth_key._private_key_decrypted()
     gc3_cfg["resource/{}".format(cluster.name)] = resource_settings
 
     engine = gc3libs.create_engine(cfg_dict=gc3_cfg)

@@ -28,9 +28,18 @@ def start_execution(request, cluster_id):
         remote_execute_cmd.delay(cluster_id, request.user.id, "ls")
         return Response()
 
-    content = "Private key needs to be unlocked"
-    return HttpResponseBadRequest(content)
+    return HttpResponseBadRequest("Private key needs to be unlocked")
 
 @api_view(["POST"])
 def start_submit(request, cluster_id, simulation_id):
-    submit_job(request.user.id, cluster_id, simulation_id)
+    if authorized_key_is_unlocked(cluster_id, request.user.id):
+        submit_job(request.user.id, cluster_id, simulation_id)
+        return Response()
+
+    return HttpResponseBadRequest("Private key needs to be unlocked")
+
+def authorized_key_is_unlocked(cluster_id, owner_id):
+    auth_key = AuthorizedKey.objects.filter(
+        cluster__id=cluster_id, owner__id=owner_id
+    )[0]
+    return auth_key.key_pair.is_unlocked()
