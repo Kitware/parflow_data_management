@@ -1,10 +1,15 @@
 import gc3libs
+import time
 from asgiref.sync import async_to_sync
 from celery import shared_task
 from channels.layers import get_channel_layer
 
+from .models.cluster import Cluster
+from .models.simulation import Simulation
 from ..consumers import compute_group_for_user
 from ..transport.connections.ssh_connection import SSHConnection
+from ..transport.models.authorized_key import AuthorizedKey
+
 
 # TODO: Make this modular
 class GdemoSimpleApp(gc3libs.Application):
@@ -47,8 +52,8 @@ def submit_job(user_id, cluster_id, simulation_id):
     auth_key = AuthorizedKey.objects.filter(
         cluster__id=cluster_id, owner__id=user_id
     )[0]
-    cluster = Cluster.objects.filter(cluster__id=cluster_id)[0]
-    simulation = Simulation.objects.filter(simulation__id=simulation_id)[0]
+    cluster = Cluster.objects.filter(pk=cluster_id)[0]
+    simulation = Simulation.objects.filter(pk=simulation_id)[0]
     app = GdemoSimpleApp()
 
     # TODO: parameterize auth name?
@@ -59,12 +64,14 @@ def submit_job(user_id, cluster_id, simulation_id):
 
     resource_settings = cluster._gc3_settings_dict()
     resource_settings["auth"] = "ssh"
+    resource_settings["transport"] = "ssh"
     resource_settings["enabled"] = "yes"
-    resource_settings["pkey"] = auth_key._private_key_decrypted()
+    resource_settings["pkey"] = auth_key.key_pair._private_key_decrypted()
     gc3_cfg["resource/{}".format(cluster.name)] = resource_settings
 
     engine = gc3libs.create_engine(cfg_dict=gc3_cfg)
     engine.add(app)
+    engine.select_resource(cluster.name)
 
     # TODO: how to handle this?
     while app.execution.state != gc3libs.Run.State.TERMINATED:

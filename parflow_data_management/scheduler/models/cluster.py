@@ -36,19 +36,17 @@ class Cluster(TimeStampedModel, models.Model):
             "max_walltime": self.max_walltime,
             "max_cores": self.max_cores,
             "architecture": self.architecture,
-            "large_file_threshold": self.large_file_threshold,
-            "large_file_chunk_size": self.large_file_chunk_size,
             "frontend": self.hostname,
             "type": self.scheduler_type,
         }
         if self.time_cmd:
-            ret["time_cmd"]: self.time_cmd
+            ret["time_cmd"] = self.time_cmd
 
         if self.large_file_threshold:
-            ret["large_file_threshold"]: self.large_file_threshold
+            ret["large_file_threshold"] = self.large_file_threshold
 
         if self.large_file_chunk_size:
-            ret["large_file_chunk_size"]: self.large_file_chunk_size
+            ret["large_file_chunk_size"] = self.large_file_chunk_size
 
         return ret
 

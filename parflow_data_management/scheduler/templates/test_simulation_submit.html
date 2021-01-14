@@ -16,7 +16,7 @@
     console.log("Simulation id:", simulation_id)
     if (cluster_id != "" && simulation_id != "")
     {
-      var dest_url = "clusters/" cluster_id + "/simulations/" + simulation_id + "/submit/"
+      var dest_url = "clusters/" + cluster_id + "/simulations/" + simulation_id + "/submit/"
       console.log("Going to " + dest_url)
       fetch(dest_url, {
         method: "POST",
