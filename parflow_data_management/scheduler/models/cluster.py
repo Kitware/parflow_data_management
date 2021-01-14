@@ -40,6 +40,7 @@ class Cluster(TimeStampedModel, models.Model):
             "large_file_threshold": self.large_file_threshold,
             "large_file_chunk_size": self.large_file_chunk_size,
             "frontend": self.hostname,
+            "type": self.scheduler_type,
         }
 
 
