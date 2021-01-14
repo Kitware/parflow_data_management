@@ -31,4 +31,4 @@ def start_execution(request, cluster_id):
 
 @api_view(["POST"])
 def start_submit(request, cluster_id, simulation_id):
-    submit_job(cluster_id, simulation_id)
+    submit_job(request.user.id, cluster_id, simulation_id)
