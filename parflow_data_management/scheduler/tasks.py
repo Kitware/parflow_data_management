@@ -1,8 +1,11 @@
+import io
+
 import gc3libs
 import time
 from asgiref.sync import async_to_sync
 from celery import shared_task
 from channels.layers import get_channel_layer
+from paramiko import RSAKey
 
 from .models.cluster import Cluster
 from .models.simulation import Simulation
@@ -60,13 +63,15 @@ def submit_job(user_id, cluster_id, simulation_id):
     gc3_cfg = {"auth/ssh": {
         "type": "ssh",
         "username": auth_key.username,
+        "pkey": RSAKey.from_private_key(
+                io.StringIO(auth_key.key_pair._private_key_decrypted()))
     }}
 
+    # Construct resource sections and add to cfg_dict
     resource_settings = cluster._gc3_settings_dict()
     resource_settings["auth"] = "ssh"
     resource_settings["transport"] = "ssh"
     resource_settings["enabled"] = "yes"
-    resource_settings["pkey"] = auth_key.key_pair._private_key_decrypted()
     gc3_cfg["resource/{}".format(cluster.name)] = resource_settings
 
     engine = gc3libs.create_engine(cfg_dict=gc3_cfg)
