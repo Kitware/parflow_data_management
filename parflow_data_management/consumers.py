@@ -26,6 +26,13 @@ class RemoteEventConsumer(JsonWebsocketConsumer):
             "data": message["data"],
         })
 
+    def job_status(self, message):
+        self.send_json({
+            "type": "job.status",
+            "data": message["data"],
+        })
+
+
 # Compute a unique group name that will contain only the connection
 # for the given user.
 def compute_group_for_user(user_id):

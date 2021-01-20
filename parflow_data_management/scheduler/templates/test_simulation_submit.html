@@ -5,9 +5,19 @@
 <label for="simulation-id-field">Simulation ID:</label>
 <textarea id="simulation-id-field" cols="100" rows="1"></textarea><br>
 
+<label for="job-status-field">Job Status:</label>
+<textarea id="job-status-field" cols="100" rows="1" readonly></textarea><br>
+
 <input id="submit_button_id" type="submit" class="btn" value="Submit" name="submit_button"/>
 <script>
+
   var generated_csrf_token = "{{ csrf_token }}";
+
+  const statusSocket = new WebSocket(
+      'ws://'
+      + window.location.host
+      + '/ws/data/'
+  );
 
   document.getElementById("submit_button_id").onclick = function() {
     cluster_id = document.getElementById("cluster-id-field").value
@@ -16,7 +26,7 @@
     console.log("Simulation id:", simulation_id)
     if (cluster_id != "" && simulation_id != "")
     {
-      var dest_url = "clusters/" + cluster_id + "/simulations/" + simulation_id + "/submit/"
+      var dest_url = "/clusters/" + cluster_id + "/simulations/" + simulation_id + "/submit/"
       console.log("Going to " + dest_url)
       fetch(dest_url, {
         method: "POST",
@@ -30,6 +40,16 @@
       })
     }
   }
+
+  statusSocket.onmessage = function(e) {
+      console.log("Receiving message")
+      const data = JSON.parse(e.data);
+      document.getElementById('job-status-field').value = (data.data.status);
+  };
+
+  statusSocket.onclose = function(e) {
+      console.error('Key socket closed unexpectedly');
+  };
 
 </script>
 </html>

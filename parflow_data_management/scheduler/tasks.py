@@ -52,20 +52,23 @@ def remote_execute_cmd(cluster_id, user_id, command):
 
 @shared_task
 def submit_job(user_id, cluster_id, simulation_id):
-    auth_key = AuthorizedKey.objects.filter(
-        cluster__id=cluster_id, owner__id=user_id
-    )[0]
+    auth_key = AuthorizedKey.objects.filter(cluster__id=cluster_id, owner__id=user_id)[
+        0
+    ]
     cluster = Cluster.objects.filter(pk=cluster_id)[0]
     simulation = Simulation.objects.filter(pk=simulation_id)[0]
     app = GdemoSimpleApp()
 
     # TODO: parameterize auth name?
-    gc3_cfg = {"auth/ssh": {
-        "type": "ssh",
-        "username": auth_key.username,
-        "pkey": RSAKey.from_private_key(
-                io.StringIO(auth_key.key_pair._private_key_decrypted()))
-    }}
+    gc3_cfg = {
+        "auth/ssh": {
+            "type": "ssh",
+            "username": auth_key.username,
+            "pkey": RSAKey.from_private_key(
+                io.StringIO(auth_key.key_pair._private_key_decrypted())
+            ),
+        }
+    }
 
     # Construct resource sections and add to cfg_dict
     resource_settings = cluster._gc3_settings_dict()
@@ -78,9 +81,17 @@ def submit_job(user_id, cluster_id, simulation_id):
     engine.add(app)
     engine.select_resource(cluster.name)
 
-    # TODO: how to handle this?
+    last_status = None
     while app.execution.state != gc3libs.Run.State.TERMINATED:
-        print("Job in status %s " % app.execution.state)
+        # Job status change? Send update to user over websocket
+        if app.execution.state != last_status:
+            data = {"status": app.execution.state}
+            group = compute_group_for_user(user_id)
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                group, {"type": "job.status", "data": data}
+            )
+            last_status = app.execution.state
+
         engine.progress()
         time.sleep(1)
-
