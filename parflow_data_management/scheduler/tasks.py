@@ -14,25 +14,14 @@ from ..transport.connections.ssh_connection import SSHConnection
 from ..transport.models.authorized_key import AuthorizedKey
 
 
-# TODO: Make this modular
-class GdemoSimpleApp(gc3libs.Application):
-    """
-    This simple application will run `/bin/hostname`:file: on the remote host,
-    and retrieve the output in a file named `stdout.txt`:file: into a
-    directory `GdemoSimpleApp_output`:file: inside the current directory.
-    """
-
-    def __init__(self):
-        gc3libs.Application.__init__(
-            self,
-            # the following arguments are mandatory:
-            arguments=["/bin/hostname"],
-            inputs=[],
-            outputs=[],
-            output_dir="./GdemoSimpleApp_output",
-            # the rest is optional and has reasonable defaults:
-            stdout="stdout.txt",
-        )
+def create_app(simulation):
+    return gc3libs.Application(
+        arguments=simulation.arguments,
+        inputs=[],
+        outputs=[],
+        output_dir="./GdemoSimpleApp_output",
+        stdout="stdout.txt",
+    )
 
 
 # TODO: rework this logic to handle multiple private keys per
@@ -57,7 +46,7 @@ def submit_job(user_id, cluster_id, simulation_id):
     ]
     cluster = Cluster.objects.filter(pk=cluster_id)[0]
     simulation = Simulation.objects.filter(pk=simulation_id)[0]
-    app = GdemoSimpleApp()
+    app = create_app(simulation)
 
     # TODO: parameterize auth name?
     gc3_cfg = {
