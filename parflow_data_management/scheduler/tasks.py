@@ -2,16 +2,14 @@ import io
 
 import gc3libs
 import time
-from asgiref.sync import async_to_sync
 from celery import shared_task
-from channels.layers import get_channel_layer
 from paramiko import RSAKey
 
 from .models.cluster import Cluster
 from .models.simulation import Simulation
-from ..consumers import compute_group_for_user
 from ..transport.connections.ssh_connection import SSHConnection
 from ..transport.models.authorized_key import AuthorizedKey
+from ..utils.websocket_util import send_data_to_user
 
 
 def create_app(simulation):
@@ -32,11 +30,7 @@ def remote_execute_cmd(cluster_id, user_id, command):
         output = con.execute(command)
 
     data = {"output": output}
-    group = compute_group_for_user(user_id)
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        group, {"type": "command.output", "data": data}
-    )
+    send_data_to_user(data, user_id, "command.output")
 
 
 @shared_task
@@ -75,11 +69,7 @@ def submit_job(user_id, cluster_id, simulation_id):
         # Job status change? Send update to user over websocket
         if app.execution.state != last_status:
             data = {"status": app.execution.state}
-            group = compute_group_for_user(user_id)
-            channel_layer = get_channel_layer()
-            async_to_sync(channel_layer.group_send)(
-                group, {"type": "job.status", "data": data}
-            )
+            send_data_to_user(data, user_id, "job.status")
             last_status = app.execution.state
 
         engine.progress()

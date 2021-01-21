@@ -1,15 +1,14 @@
 import io
 import json
 
-from asgiref.sync import async_to_sync
 from celery import shared_task
-from channels.layers import get_channel_layer
 from django.contrib.auth import get_user_model
 from paramiko.rsakey import RSAKey
 from xkcdpass import xkcd_password as xp
 
-from ..consumers import compute_group_for_user
 from parflow_data_management.transport.models.key_pair import KeyPair
+from ..consumers import compute_group_for_user
+from ..utils.websocket_util import send_data_to_user
 
 
 @shared_task
@@ -33,8 +32,4 @@ def generate_key_and_passphrase(user_id, key_pair_id):
 
     # Now send across websocket
     data = {"public_key": public_key, "passphrase": passphrase}
-    group = compute_group_for_user(user_id)
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        group, {"type": "public.key.with.passphrase", "data": data}
-    )
+    send_data_to_user(data, user_id, "public.key.with.passphrase")
