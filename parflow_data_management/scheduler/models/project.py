@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import CharField
+from django.db.models import TextField
 from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
@@ -8,7 +8,7 @@ from guardian.shortcuts import assign_perm
 
 
 class Project(TimeStampedModel, models.Model):
-    name = CharField(_("Name of Project"), blank=True, max_length=255)
+    name = TextField(_("Name of Project"), blank=True)
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="projects")
     # TODO: more fields
 

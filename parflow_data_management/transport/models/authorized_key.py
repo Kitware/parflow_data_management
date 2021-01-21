@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import CharField
+from django.db.models import TextField
 from django.utils.translation import gettext_lazy as _
 
 from parflow_data_management.scheduler.models.cluster import Cluster
@@ -20,4 +20,4 @@ class AuthorizedKey(models.Model):
         KeyPair, on_delete=models.CASCADE, related_name="authorized_keys"
     )
 
-    username = CharField(_("Username for cluster user"), max_length=30)
+    username = TextField(_("Username for cluster user"))
