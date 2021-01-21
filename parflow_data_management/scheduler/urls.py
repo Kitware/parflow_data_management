@@ -10,8 +10,14 @@ from .rest import (
     metadata,
     project,
     simulation,
+    workflow,
 )
-from .views import cluster_execute_page, start_execution, start_submit, test_simulation_submit
+from .views import (
+    cluster_execute_page,
+    start_execution,
+    start_submit,
+    test_simulation_submit,
+)
 
 
 router = routers.DefaultRouter(trailing_slash=False)
@@ -21,26 +27,20 @@ router.register(r"meshs", mesh.MeshViewSet)
 router.register(r"metadatas", metadata.MetadataViewSet)
 router.register(r"projects", project.ProjectViewSet)
 router.register(r"simulations", simulation.SimulationViewSet)
+router.register(r"workflows", workflow.WorkflowViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(title="", default_version="v1", description=""),
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
-
 urlpatterns = [
     # Rest
     path("", include(router.urls)),
-    path(
-        "api-auth/", include("rest_framework.urls", namespace="rest_framework")
-    ),
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Docs
     path("api/docs/redoc/", schema_view.with_ui("redoc"), name="docs-redoc"),
-    path(
-        "api/docs/swagger/",
-        schema_view.with_ui("swagger"),
-        name="docs-swagger",
-    ),
+    path("api/docs/swagger/", schema_view.with_ui("swagger"), name="docs-swagger",),
     # HPC command execution
     path("execute", cluster_execute_page),
     path("clusters/<int:cluster_id>/execute/", start_execution),
