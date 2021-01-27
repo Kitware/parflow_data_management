@@ -14,7 +14,7 @@ from ..utils.websocket_util import send_data_to_user
 
 def create_app(simulation):
     return gc3libs.Application(
-        arguments=simulation.arguments,
+        arguments=simulation.arguments.split(),
         inputs=[],
         outputs=[],
         output_dir="./GdemoSimpleApp_output",

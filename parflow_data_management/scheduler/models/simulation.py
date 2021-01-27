@@ -6,4 +6,4 @@ from .project_asset import ProjectAsset
 
 
 class Simulation(TimeStampedModel, ProjectAsset):
-    arguments = ArrayField(TextField())
+    arguments = TextField()
