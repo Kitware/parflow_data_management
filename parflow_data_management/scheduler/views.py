@@ -14,10 +14,14 @@ def cluster_execute_page(request):
 
 @api_view(["POST"])
 def start_execution(request, cluster_id):
-    auth_key = AuthorizedKey.objects.filter(
+    auth_keys = AuthorizedKey.objects.filter(
         cluster__id=cluster_id, owner__id=request.user.id
-    )[0]
-    key = auth_key.key_pair
+    )
+    if not auth_keys:
+        content = "Authorized key needs to be added for cluster"
+        return HttpResponseBadRequest(content)
+
+    key = auth_keys[0].key_pair
     if key.is_unlocked():
         remote_execute_cmd.delay(cluster_id, request.user.id, "ls")
         return Response()

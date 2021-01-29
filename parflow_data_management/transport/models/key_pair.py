@@ -1,10 +1,11 @@
 import io
 
-
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
+from django.contrib.auth.signals import user_logged_out
 from django.db import models
 from django.db.models import CharField
+from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
 from paramiko.rsakey import RSAKey
@@ -25,6 +26,9 @@ class KeyPair(TimeStampedModel, models.Model):
     def is_unlocked(self):
         private_key_dict = cache.get("UNENCRYPTED_PRIVATE_KEYS")
         return private_key_dict is not None and self.id in private_key_dict
+
+    def is_locked(self):
+        return not self.is_unlocked()
 
     def _private_key_decrypted(self):
         if self.is_unlocked():
@@ -52,3 +56,15 @@ class KeyPair(TimeStampedModel, models.Model):
 
         current_dict[self.id] = private_key_decrypted
         cache.set("UNENCRYPTED_PRIVATE_KEYS", current_dict)
+
+    def lock(self):
+        if self.is_unlocked():
+            key_ids_to_decrypted = cache.get("UNENCRYPTED_PRIVATE_KEYS")
+            key_ids_to_decrypted.pop(self.id)
+            cache.set("UNENCRYPTED_PRIVATE_KEYS", key_ids_to_decrypted)
+
+# When user logs out, re-lock their keys
+@receiver(user_logged_out)
+def post_logout(sender, request, user, **kwargs):
+    for kp in user.key_pairs.all():
+        kp.lock()
