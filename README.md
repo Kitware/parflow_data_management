@@ -181,3 +181,16 @@ maintenance. To non-destructively update your development stack at any time:
 1. Run `docker-compose pull`
 2. Run `docker-compose build`
 3. Run `docker-compose run --rm django ./manage.py migrate`
+
+# Submitting To a Remote Machine
+
+## Generating and Unlocking a Key
+1. Create a new cluster for the remote resource from the admin site.
+2. Generate a new key_pair from key-generation-test/. Remember the password and id, and copy the public key to the authorized_keys file of the remote machine.
+3. Create a new authorized_key instance and point it to the cluster and key_pair previously created.
+4. Visit the endpoint test-unlock-key_pair/ and enter your password and key id to unlock. This will need to be done after each login.
+
+## Job / Command Execution
+To test that a cluster has been configured properly, visit execute/ and provide the cluster id. This will run `ls` on the remot machine and display the output.
+
+To submit a simulation, visit the endpoint test-submit and fill out the necessary fields.
