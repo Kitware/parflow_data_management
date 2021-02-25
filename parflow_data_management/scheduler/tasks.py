@@ -75,5 +75,10 @@ def submit_job(user_id, cluster_id, simulation_id):
         engine.progress()
         time.sleep(1)
 
+
+    # Do one last update now that simulation has ended.
+    # But first, ingest the output_directory
+    cluster.asset_store.ingest(simulation.output_dir)
     data = {"status": app.execution.state}
     send_data_to_user(data, user_id, "job.status")
+

@@ -1,0 +1,37 @@
+<html>
+
+<label for="asset_store-id-field">AssetStore ID:</label>
+<textarea id="asset_store-id-field" cols="100" rows="1"></textarea><br>
+
+<label for="search-directory-field">Directory:</label>
+<textarea id="search-directory-field" cols="100" rows="1"></textarea><br>
+
+<input id="ingest_button_id" type="submit" class="btn" value="Ingest" name="ingest_button"/>
+<script>
+
+  var generated_csrf_token = "{{ csrf_token }}";
+
+  document.getElementById("ingest_button_id").onclick = function() {
+    asset_store_id = document.getElementById("asset_store-id-field").value
+    search_directory = document.getElementById("search-directory-field").value
+    console.log("AssetStore id:", asset_store_id)
+    if (asset_store_id != "")
+    {
+      var dest_url = "asset-stores/" + asset_store_id + "/ingest/"
+      console.log("Going to " + dest_url)
+      fetch(dest_url, {
+        method: "POST",
+        credentials: "same-origin",
+        body: JSON.stringify({"search_directory": search_directory}),
+        headers: {
+          "X-CSRFToken": generated_csrf_token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      })
+    }
+  }
+
+</script>
+</html>

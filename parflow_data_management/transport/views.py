@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from parflow_data_management.transport.tasks import generate_key_and_passphrase
 from .models.key_pair import KeyPair
+from .models.asset_store import AssetStore
 
 
 def keygen_view(request):
@@ -41,4 +42,15 @@ def unlock_private_key(request, key_pair_id):
     except SSHException as e:
         return HttpResponseBadRequest("Invalid passphrase")
 
+    return Response()
+
+
+def test_ingest_dir(request):
+    return render(request, "test_ingest_input_data.html")
+
+@api_view(["POST"])
+def asset_store_ingest_dir(request, asset_store_id):
+    input_dir = request.data["search_directory"]
+    store = AssetStore.objects.filter(pk=asset_store_id)[0]
+    store.ingest(input_dir)
     return Response()

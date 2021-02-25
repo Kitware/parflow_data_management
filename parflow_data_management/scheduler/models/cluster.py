@@ -50,6 +50,7 @@ class Cluster(TimeStampedModel, models.Model):
 
         return ret
 
+
 @receiver(models.signals.post_save, sender=Cluster)
 def _cluster_post_save(sender, instance, created, *args, **kwargs):
     if created:

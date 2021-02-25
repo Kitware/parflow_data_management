@@ -1,4 +1,5 @@
 import io
+import stat
 
 from django.contrib.auth import get_user_model
 from paramiko import AutoAddPolicy, RSAKey, SSHClient
@@ -47,3 +48,6 @@ class SSHConnection(Connection):
 
     def __exit__(self, type, value, traceback):
         self._client.close()
+
+    def open_sftp(self):
+        return self._client.get_transport().open_sftp_client()

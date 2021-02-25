@@ -5,14 +5,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from ..transport.models.authorized_key import AuthorizedKey
+from ..transport.models.asset_store import AssetStore
 from parflow_data_management.scheduler.tasks import remote_execute_cmd, submit_job
 
 
 def cluster_execute_page(request):
     return render(request, "execute.html")
 
+
 def test_simulation_submit(request):
     return render(request, "test_simulation_submit.html")
+
 
 @api_view(["POST"])
 def start_execution(request, cluster_id):
@@ -38,8 +41,9 @@ def start_submit(request, cluster_id, simulation_id):
 
     return HttpResponseBadRequest("Private key needs to be unlocked")
 
+
 def authorized_key_is_unlocked(cluster_id, owner_id):
-    auth_key = AuthorizedKey.objects.filter(
-        cluster__id=cluster_id, owner__id=owner_id
-    )[0]
+    auth_key = AuthorizedKey.objects.filter(cluster__id=cluster_id, owner__id=owner_id)[
+        0
+    ]
     return auth_key.key_pair.is_unlocked()

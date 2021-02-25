@@ -6,6 +6,8 @@ from rest_framework import permissions, routers
 from .rest import (
     cluster,
     conceptual_model,
+    file,
+    folder,
     mesh,
     metadata,
     project,
@@ -23,6 +25,8 @@ from .views import (
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r"clusters", cluster.ClusterViewSet)
 router.register(r"conceptual_models", conceptual_model.ConceptualModelViewSet)
+router.register(r"files", file.FileViewSet)
+router.register(r"folders", folder.FolderViewSet)
 router.register(r"meshs", mesh.MeshViewSet)
 router.register(r"metadatas", metadata.MetadataViewSet)
 router.register(r"projects", project.ProjectViewSet)
