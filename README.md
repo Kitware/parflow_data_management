@@ -184,11 +184,14 @@ maintenance. To non-destructively update your development stack at any time:
 
 # Submitting To a Remote Machine
 
-## Generating and Unlocking a Key
-1. Create a new cluster for the remote resource from the admin site.
-2. Generate a new key_pair from key-generation-test/. Remember the password and id, and copy the public key to the authorized_keys file of the remote machine.
-3. Create a new authorized_key instance and point it to the cluster and key_pair previously created.
-4. Visit the endpoint test-unlock-key_pair/ and enter your password and key id to unlock. This will need to be done after each login.
+## Setup
+1. Create a new project from the admin site.
+2. Create a new simulation from the admin site, pointing it to the cluster in step 1. "Arguments" is the command to be run on the remote machine.
+3. Create a new cluster for the remote resource from the admin site.
+4. Create a new assetstore from the admin site and assign it to the cluster create in the previous step.
+5. Generate a new key_pair from key-generation-test/. Remember the password and id, and copy the public key to the authorized_keys file of the remote machine. If doing this manually, be sure to follow the structure of an authorized_keys file.
+6. Create a new authorized_key instance from the admin site and point it to the cluster and key_pair previously created.
+7. Visit the endpoint test-unlock-key_pair/ and enter your password and key id to unlock. This will need to be done after each login.
 
 ## Job / Command Execution
 To test that a cluster has been configured properly, visit execute/ and provide the cluster id. This will run `ls` on the remot machine and display the output.
