@@ -186,14 +186,14 @@ maintenance. To non-destructively update your development stack at any time:
 
 ## Setup
 1. Create a new project from the admin site.
-2. Create a new simulation from the admin site, pointing it to the cluster in step 1. "Arguments" is the command to be run on the remote machine.
+2. Create a new simulation from the admin site, pointing it to the project in step 1. "Arguments" is the command to be run on the remote machine.
 3. Create a new cluster for the remote resource from the admin site.
 4. Create a new assetstore from the admin site and assign it to the cluster create in the previous step.
-5. Generate a new key_pair from key-generation-test/. Remember the password and id, and copy the public key to the authorized_keys file of the remote machine. If doing this manually, be sure to follow the structure of an authorized_keys file.
+5. Generate a new key_pair from the endpoint `key-generation-test`. Remember the password and id, and copy the public key to the authorized_keys file of the remote machine. If doing this manually, be sure to follow the structure of an authorized_keys file.
 6. Create a new authorized_key instance from the admin site and point it to the cluster and key_pair previously created.
-7. Visit the endpoint test-unlock-key_pair/ and enter your password and key id to unlock. This will need to be done after each login.
+7. Visit the endpoint `test-unlock-key_pair` and enter your password and key id to unlock. This will need to be done after each login.
 
 ## Job / Command Execution
-To test that a cluster has been configured properly, visit execute/ and provide the cluster id. This will run `ls` on the remot machine and display the output.
+To test that a cluster has been configured properly, visit the endpoint `execute` and provide the cluster id. This will run `ls` on the remote machine and display the output.
 
-To submit a simulation, visit the endpoint test-submit and fill out the necessary fields.
+To submit a simulation, visit the endpoint `test-submit` and fill out the necessary fields.
