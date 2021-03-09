@@ -30,6 +30,16 @@ git clone https://github.com/tao558/parflow_data_management.git
 ```
 
 Navigate to the project root. Then, to install this package and all dependencies:
+
+Note: We currently require unreleased changes in gc3pie. These can be installed
+as follows:
+
+```
+pip install git+https://github.com/gc3pie/gc3pie.git@07ae6677#egg=gc3pie
+```
+
+Then the package and the rest of the dependencies can be installed:
+
 ```
 pip install -e parflow_data_management/
 ```

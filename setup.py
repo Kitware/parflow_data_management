@@ -41,6 +41,7 @@ setup(
         "django-guardian",
         "django_extensions",
         "drf-yasg",
+        "gc3pie",
         # Production
         "gunicorn",
         "psycopg2",
